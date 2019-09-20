@@ -16,16 +16,16 @@ import re
 from keras.applications.vgg16 import VGG16
 
 
-class XAIToolHeatmap:
-  def __init__(self, img_path, model, input_size):
+class XAIHeatmap:
+  def __init__(self, img_tensor, model, input_size):
     self.model = model
-    self.img_path = img_path
+    self.img_tensor = img_tensor
     self.input_size = input_size
     self.layers = self.getLayers(model)
     
 
   def runTool(self, layer_num):
-    heatmap = self.camXAITool(self.img_path, self.model, self.layers[layer_num], self.input_size)
+    heatmap = self.camXAITool(self.img_tensor, self.model, self.layers[layer_num], self.input_size)
     return heatmap
   
   def getLayers(self, model):
@@ -50,16 +50,10 @@ class XAIToolHeatmap:
 
     return layer_names
   
-  def camXAITool(self, img_path, model, layer_name, input_size):
-    # loading the img in from path
-    img = image.load_img(img_path, target_size = input_size)
-    # changing the image into a keras form bath in 4-D
-    x = image.img_to_array(img)
-    x = np.expand_dims(x, axis=0)
-    x = preprocess_input(x)
+  def camXAITool(self, img_tensor, model, layer_name, input_size):
     # Getting the predictions from the model
     # preds is the coded preds and prediction is the string repr of the prediction
-    preds = model.predict(x)
+    preds = model.predict(img_tensor)
     predictions = decode_predictions(preds, top=1)[0][0]
     predictions = predictions[1]
     # Getting the tensor of all weights of the final dense layer
@@ -77,7 +71,7 @@ class XAIToolHeatmap:
     # Making the Keras function
     iterate = K.function([model.input], [pooled_grads, conv_layer])
     # Getting the pooled_grads and conv layer w.r.t. the input img
-    pooled_grads_value, conv_layer_output_layer = iterate([x])
+    pooled_grads_value, conv_layer_output_layer = iterate([img_tensor])
     for i in range(len(pooled_grads_value)):
       conv_layer_output_layer[0, :, :, i] *= pooled_grads_value[i]
     # Generating the heatmap based on the grads and conv_layer
