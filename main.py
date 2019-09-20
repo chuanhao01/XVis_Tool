@@ -29,7 +29,7 @@ model = VGG16(weights = 'imagenet')
 input_size = (224, 224)
 xai_tool = XAITool(img_path, model, input_size)
 # For first instance
-img = cv2.imread(img_path)
+img = xai_tool.cv2img
 # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 heatmap = xai_tool.xai_heatmap.runTool(-1)
 drawer.draw(img, heatmap, 0)

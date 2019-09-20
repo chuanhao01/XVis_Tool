@@ -17,15 +17,16 @@ from keras.applications.vgg16 import VGG16
 
 
 class XAIHeatmap:
-  def __init__(self, img_tensor, model, input_size):
+  def __init__(self, cv2img, img_tensor, model, input_size):
     self.model = model
     self.img_tensor = img_tensor
+    self.cv2img = cv2img 
     self.input_size = input_size
     self.layers = self.getLayers(model)
     
 
   def runTool(self, layer_num):
-    heatmap = self.camXAITool(self.img_tensor, self.model, self.layers[layer_num], self.input_size)
+    heatmap = self.camXAITool(self.cv2img, self.img_tensor, self.model, self.layers[layer_num], self.input_size)
     return heatmap
   
   def getLayers(self, model):
@@ -50,7 +51,7 @@ class XAIHeatmap:
 
     return layer_names
   
-  def camXAITool(self, img_tensor, model, layer_name, input_size):
+  def camXAITool(self, cv2img, img_tensor, model, layer_name, input_size):
     # Getting the predictions from the model
     # preds is the coded preds and prediction is the string repr of the prediction
     preds = model.predict(img_tensor)
@@ -80,7 +81,7 @@ class XAIHeatmap:
     heatmap = np.maximum(heatmap, 0)
     heatmap /= np.max(heatmap)
     # Loading the img using cv2
-    img = cv2.imread(img_path)
+    img = cv2img 
 
     # Not sure if I need this lel
     # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

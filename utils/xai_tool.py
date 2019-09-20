@@ -1,4 +1,6 @@
-from xai_heatmap import XAIHeatmap
+import cv2
+
+from .xai_heatmap import XAIHeatmap
 
 import numpy as np
 
@@ -12,8 +14,9 @@ class XAITool():
         self.model = model
         self.input_size = input_size
         self.img_tensor = self.preprocessImgs(self.img_path, self.input_size)
+        self.cv2img = cv2.imread(img_path)
         # Creating an instance of the heatmap class
-        self.xai_heatmap = XAIHeatmap(self.img_tensor, self.model, self.input_size)
+        self.xai_heatmap = XAIHeatmap(self.cv2img, self.img_tensor, self.model, self.input_size)
 
     def preprocessImgs(self, img_path, input_size):
         # loading the img in from path

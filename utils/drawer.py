@@ -28,4 +28,4 @@ class Drawer:
     # Adding heatmap
     self.mask[400:400 + resized_heatmap.shape[0], :resized_heatmap.shape[1], :resized_heatmap.shape[2]] = resized_heatmap
     cv2.imshow('XAI_tool', self.mask)
-    cv2.waitKey(10)
+    cv2.waitKey(100)
