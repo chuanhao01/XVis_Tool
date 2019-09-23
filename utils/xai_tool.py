@@ -20,6 +20,8 @@ class XAITool:
         else:
             self.img_tensor = self.preprocessImgs(self.img_path, self.input_size)
         self.cv2img = cv2.imread(img_path)
+        # self.cv2img = cv2.flip(self.cv2img, 1)
+        # cv2.imwrite('flip.png', self.cv2img)
         # Creating an instance of the heatmap class
         self.xai_heatmap = XAIHeatmap(self.cv2img, self.img_tensor, self.model, self.input_size, self.decoder_func)
         self.xai_activations = XAIActivations(self.img_tensor, self.model, self.xai_heatmap.layers)
@@ -31,6 +33,7 @@ class XAITool:
     def preprocessImgs(self, img_path, input_size, preprocess_img_func = None):
         # loading the img in from path
         img = image.load_img(img_path, target_size = input_size)
+
         # changing the image into a keras form bath in 4-D
         img_tensor = image.img_to_array(img)
         img_tensor = np.expand_dims(img_tensor, axis=0)

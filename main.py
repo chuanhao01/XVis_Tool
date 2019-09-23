@@ -7,13 +7,14 @@ from keras.applications.vgg16 import VGG16
 from keras.preprocessing import image
 from keras.applications.vgg16 import preprocess_input
 from keras.applications.vgg16 import decode_predictions
+from time import time
 
 def userSelection():
     while(True):
         selected_layer = input('>>')
         if(selected_layer.isdigit()):
             selected_layer = int(selected_layer)
-            if(0 < selected_layer < len(layer_names) + 1):
+            if(-1 < selected_layer < len(layer_names) + 1):
                 return selected_layer - 1
             else:
                 print('Selection out of range')
@@ -26,6 +27,7 @@ def userSelection():
 drawer = Drawer()
 # Init XAIToolHeatmap class
 img_path = 'Sample_Images/doberman_1.jpg'
+img_path = 'flip.png'
 model = VGG16(weights = 'imagenet')
 input_size = (224, 224)
 xai_tool = XAITool(img_path, model, input_size, decode_predictions, preprocess_input)
@@ -48,8 +50,11 @@ while(True):
     # Getting layer selected
     layer_selection = userSelection()
     # Updating the heatmaps and activations for the new layer
+    tick = time()
     new_heatmap = xai_tool.xai_heatmap.runTool(layer_selection)
     new_activations = xai_tool.xai_activations.runTool(layer_selection)
+    tock = time()
+    print(tock - tick)
     # For now we assume the preds don't change
     drawer.draw(img, new_heatmap, new_activations, predictions)
 cv2.destroyAllWindows()
