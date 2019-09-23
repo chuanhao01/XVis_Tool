@@ -24,10 +24,10 @@ def userSelection():
 # Init drawer class
 drawer = Drawer()
 # Init XAIToolHeatmap class
-img_path = 'Sample_Images/cat_2.jpg'
+img_path = 'Sample_Images/rando_person.jpg'
 model = VGG16(weights = 'imagenet')
 input_size = (224, 224)
-xai_tool = XAITool(img_path, model, input_size)
+xai_tool = XAITool(img_path, model, input_size, preprocess_input)
 # For first instance
 img = xai_tool.cv2img
 # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
