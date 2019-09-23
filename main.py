@@ -24,7 +24,7 @@ def userSelection():
 # Init drawer class
 drawer = Drawer()
 # Init XAIToolHeatmap class
-img_path = 'Sample_Images/cat_1.jpg'
+img_path = 'Sample_Images/cat_2.jpg'
 model = VGG16(weights = 'imagenet')
 input_size = (224, 224)
 xai_tool = XAITool(img_path, model, input_size)

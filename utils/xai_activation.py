@@ -13,8 +13,12 @@ class XAIActivations:
             activation_3d = []
             for c_channel in range(3):
                 activation_3d.append(activation)
-            activation_3d = np.array(activation_3d)
-            activation_3d = np.transpose(activation_3d)
+            # OLD
+            # activation_3d = np.array(activation_3d)
+            # activation_3d = np.transpose(activation_3d)
+
+            # NEW
+            activation_3d = np.stack(activation_3d, axis=2)
             activations_3d_list.append(activation_3d)
         return activations_3d_list
 
