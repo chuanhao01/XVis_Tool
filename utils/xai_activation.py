@@ -7,7 +7,7 @@ class XAIActivations:
         self.model = model
         self.layers = layers
 
-    # Function to turn the 2-D numpy arrays of the activations into a 3-D array for cv2 to displat
+    # Function to turn the 2-D numpy arrays of the activations into a 3-D array for cv2 to display
     def turnTo3d(self, activations_list):
         activations_3d_list = []
         for activation in activations_list:
