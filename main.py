@@ -27,16 +27,16 @@ def userSelection():
 drawer = Drawer()
 # Init XAIToolHeatmap class
 img_path = 'Sample_Images/doberman_1.jpg'
-img_path = 'flip.png'
 model = VGG16(weights = 'imagenet')
 input_size = (224, 224)
 xai_tool = XAITool(img_path, model, input_size, decode_predictions, preprocess_input)
 # For first instance
+# Assuming the last layer is selected and predictions dont change
 img = xai_tool.cv2img
 heatmap = xai_tool.xai_heatmap.runTool(-1)
 activations = xai_tool.xai_activations.runTool(-1)
 predictions = xai_tool.getPreds()
-drawer.draw(img, heatmap, activations, predictions)
+drawer.draw(img, heatmap, activations, predictions, len(xai_tool.xai_heatmap.layers))
 # Setting up the predictions
 # Setting up the var
 layer_names = xai_tool.xai_heatmap.layers
@@ -50,11 +50,8 @@ while(True):
     # Getting layer selected
     layer_selection = userSelection()
     # Updating the heatmaps and activations for the new layer
-    tick = time()
     new_heatmap = xai_tool.xai_heatmap.runTool(layer_selection)
     new_activations = xai_tool.xai_activations.runTool(layer_selection)
-    tock = time()
-    print(tock - tick)
     # For now we assume the preds don't change
-    drawer.draw(img, new_heatmap, new_activations, predictions)
+    drawer.draw(img, new_heatmap, new_activations, predictions, layer_selection + 1)
 cv2.destroyAllWindows()

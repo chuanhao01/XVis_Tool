@@ -17,8 +17,9 @@ class Drawer:
     resized_img = cv2.resize(img_to_resize, new_dims)
     return resized_img
 
-  def showLabels(self, predictions):
-    # Setting up canvas and defaults for the text
+  def showImgText(self, predictions, selected_layer):
+    # Setting up defaults for the text
+    # For the preds
     font = cv2.FONT_HERSHEY_SIMPLEX
     btm_left = (10, 790)
     font_scale = 1
@@ -33,9 +34,19 @@ class Drawer:
     font_color,
     line_type
     )
+    # For the selected layer
+    btm_left = (10, 750)
+    txt_to_show = 'Layer {}'.format(selected_layer)
+    cv2.putText(self.mask, txt_to_show,
+    btm_left,
+    font,
+    font_scale,
+    font_color,
+    line_type
+    )
     
 
-  def draw(self, input_img, heatmap, activations, predictions):
+  def draw(self, input_img, heatmap, activations, predictions, selected_layer):
     # Creating the black BG
     self.mask = np.zeros((800, 1200, 3), dtype='uint8')
     resized_input = self.resizeDisplayImg(input_img, 400)
@@ -72,7 +83,7 @@ class Drawer:
         for _col in range(10):
           act_to_show = resized_activations[_row * 10 + _col]
           self.mask[(act_len * _row):(act_len* (_row + 1)), (400 + act_len * _col):(400 + act_len * (_col + 1)), :3] = act_to_show   
-    # Adding the prediction label
-    self.showLabels(predictions)
+    # Adding the prediction label and selected layer 
+    self.showImgText(predictions, selected_layer)
     cv2.imshow('XAI_tool', self.mask)
     cv2.waitKey(100)
