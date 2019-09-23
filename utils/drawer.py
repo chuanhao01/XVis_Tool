@@ -6,7 +6,7 @@ class Drawer:
     self.mask = None
 
   # To resize the input and heatmap imgs
-  # Params is a numpy array
+  # Params is a numpy array and the len of the square you want to resize to in px
   def resizeDisplayImg(self, img_to_resize, sq_len):
     # The len of sq where the img will be in
     dims = img_to_resize.shape[:2]

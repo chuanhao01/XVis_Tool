@@ -23,12 +23,19 @@ def userSelection():
 
 
 
-# Init drawer class
-drawer = Drawer()
-# Init XAIToolHeatmap class
+# Setting up the input for the tool
+# model is a keras model
+# input_size is a tuple of (x, y) which contains the dims of the input image of the CNN
+# decode_predictions is the function keras uses to decode the prediction
+# preprocess_input is the function keras uses to process the images before passing them into the model. NOTE: this is an optional arg
 img_path = 'Sample_Images/doberman_1.jpg'
 model = VGG16(weights = 'imagenet')
 input_size = (224, 224)
+decode_predictions = decode_predictions
+preprocess_input = preprocess_input
+
+# Init drawer and xai_tool classes
+drawer = Drawer()
 xai_tool = XAITool(img_path, model, input_size, decode_predictions, preprocess_input)
 # For first instance
 # Assuming the last layer is selected and predictions dont change

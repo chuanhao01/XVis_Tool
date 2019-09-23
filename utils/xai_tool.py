@@ -14,6 +14,7 @@ class XAITool:
         self.model = model
         self.input_size = input_size
         self.decoder_func = decoder_func
+        # Special case for the optional preprocessing function
         if (preprocess_img_func):
             self.preprocess_img_func = preprocess_img_func
             self.img_tensor = self.preprocessImgs(self.img_path, self.input_size, self.preprocess_img_func)
@@ -25,6 +26,7 @@ class XAITool:
         self.xai_activations = XAIActivations(self.img_tensor, self.model, self.xai_heatmap.layers)
         self.predictLabel(self.model, self.img_tensor, self.input_size, self.decoder_func)
 
+    # High level wrapping function with defaults already placed in
     def getPreds(self):
         return self.predictLabel(self.model, self.img_tensor, self.input_size, self.decoder_func)
 
@@ -35,6 +37,7 @@ class XAITool:
         # changing the image into a keras form bath in 4-D
         img_tensor = image.img_to_array(img)
         img_tensor = np.expand_dims(img_tensor, axis=0)
+        # Special code in the case a preprocessing function is passed in
         if(preprocess_img_func):
             img_tensor = preprocess_img_func(img_tensor)
         return img_tensor
