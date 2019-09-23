@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from keras.applications.vgg16 import decode_predictions
 import seaborn as sns
 
 from keras.applications.vgg16 import VGG16
@@ -9,7 +8,6 @@ from keras import backend as K
 import matplotlib.pyplot as plt
 
 from keras.preprocessing import image
-from keras.applications.vgg16 import preprocess_input
 import cv2
 import re
 
@@ -17,16 +15,17 @@ from keras.applications.vgg16 import VGG16
 
 
 class XAIHeatmap:
-  def __init__(self, cv2img, img_tensor, model, input_size):
+  def __init__(self, cv2img, img_tensor, model, input_size, decoder_func):
     self.model = model
     self.img_tensor = img_tensor
     self.cv2img = cv2img 
     self.input_size = input_size
+    self.decoder_func = decoder_func
     self.layers = self.getLayers(model)
     
 
   def runTool(self, layer_num):
-    heatmap = self.camXAITool(self.cv2img, self.img_tensor, self.model, self.layers[layer_num], self.input_size)
+    heatmap = self.camXAITool(self.cv2img, self.img_tensor, self.model, self.layers[layer_num], self.input_size, self.decoder_func)
     return heatmap
   
   def getLayers(self, model):
@@ -51,11 +50,11 @@ class XAIHeatmap:
 
     return layer_names
   
-  def camXAITool(self, cv2img, img_tensor, model, layer_name, input_size):
+  def camXAITool(self, cv2img, img_tensor, model, layer_name, input_size, decoder_func):
     # Getting the predictions from the model
     # preds is the coded preds and prediction is the string repr of the prediction
     preds = model.predict(img_tensor)
-    predictions = decode_predictions(preds, top=1)[0][0]
+    predictions = decoder_func(preds, top=1)[0][0]
     predictions = predictions[1]
     # Getting the tensor of all weights of the final dense layer
     output = model.output

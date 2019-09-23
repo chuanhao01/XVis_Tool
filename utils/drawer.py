@@ -17,7 +17,25 @@ class Drawer:
     resized_img = cv2.resize(img_to_resize, new_dims)
     return resized_img
 
-  def draw(self, input_img, heatmap, activations):
+  def showLabels(self, predictions):
+    # Setting up canvas and defaults for the text
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    btm_left = (10, 790)
+    font_scale = 1
+    font_color = (255,255,255)
+    line_type = 2
+    # Formating text to show
+    txt_to_show = 'Prediction: {} Confidence Score: {}'.format(predictions[1], predictions[2])
+    cv2.putText(self.mask, txt_to_show,
+    btm_left,
+    font,
+    font_scale,
+    font_color,
+    line_type
+    )
+    
+
+  def draw(self, input_img, heatmap, activations, predictions):
     # Creating the black BG
     self.mask = np.zeros((800, 1200, 3), dtype='uint8')
     resized_input = self.resizeDisplayImg(input_img, 400)
@@ -48,15 +66,13 @@ class Drawer:
         for _col in range(col_last):
           act_to_show = resized_activations[row_num * 10 + _col]
           self.mask[(act_len * row_num):(act_len* (row_num + 1)), (400 + act_len * _col):(400 + act_len * (_col + 1)), :3] = act_to_show   
+    # If there is more than 100 activations to show
     else:
       for _row in range(10):
         for _col in range(10):
           act_to_show = resized_activations[_row * 10 + _col]
           self.mask[(act_len * _row):(act_len* (_row + 1)), (400 + act_len * _col):(400 + act_len * (_col + 1)), :3] = act_to_show   
-    # Old
-    # for row_num in range(1):
-    #   for col_num in range(1):
-    #     act_to_show = resized_activations[row_num * 10 + col_num]
-    #     self.mask[(40 * row_num):(40 * (row_num + 1)), (400 + 40 * col_num):(400 + 40 * (col_num + 1)), :3] = act_to_show   
+    # Adding the prediction label
+    self.showLabels(predictions)
     cv2.imshow('XAI_tool', self.mask)
     cv2.waitKey(100)
