@@ -32,7 +32,8 @@ xai_tool = XAITool(img_path, model, input_size)
 img = xai_tool.cv2img
 # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 heatmap = xai_tool.xai_heatmap.runTool(-1)
-drawer.draw(img, heatmap, 0)
+activations = xai_tool.xai_activations.runTool(-1)
+drawer.draw(img, heatmap, activations)
 # Setting up the var
 layer_names = xai_tool.xai_heatmap.layers
 while(True):
@@ -45,5 +46,6 @@ while(True):
     # Getting layer selected
     layer_selection = userSelection()
     new_heatmap = xai_tool.xai_heatmap.runTool(layer_selection)
-    drawer.draw(img, new_heatmap, 0)
+    new_activations = xai_tool.xai_activations.runTool(layer_selection)
+    drawer.draw(img, new_heatmap, new_activations)
 

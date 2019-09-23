@@ -1,13 +1,14 @@
 import cv2
 
 from .xai_heatmap import XAIHeatmap
+from .xai_activation import XAIActivations
 
 import numpy as np
 
 from keras.preprocessing import image
 from keras.applications.vgg16 import preprocess_input
 
-class XAITool():
+class XAITool:
     def __init__(self, img_path, model, input_size):
         # Initialising vars
         self.img_path = img_path
@@ -17,6 +18,8 @@ class XAITool():
         self.cv2img = cv2.imread(img_path)
         # Creating an instance of the heatmap class
         self.xai_heatmap = XAIHeatmap(self.cv2img, self.img_tensor, self.model, self.input_size)
+        self.xai_activations = XAIActivations(self.img_tensor, self.model, self.xai_heatmap.layers)
+        
 
     def preprocessImgs(self, img_path, input_size):
         # loading the img in from path
