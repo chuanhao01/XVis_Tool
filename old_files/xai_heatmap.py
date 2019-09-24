@@ -13,25 +13,57 @@ import re
 
 from keras.applications.vgg16 import VGG16
 
-class XAIHeatmap:
-  def __init__(self, model, layers):
-    self.model = model
-    self.layers = layers
-  
-  # High level wrapping function to run and get a heatmap
-  def runTool(self, cv2img, img_tensor, layer_num):
-    heatmap = self.camXAITool(cv2img, img_tensor, self.model, self.layers[layer_num])
-    return heatmap
 
-  def camXAITool(self, cv2img, img_tensor, model, layer_name):
+class XAIHeatmap:
+  def __init__(self, cv2img, img_tensor, model, input_size, decoder_func):
+    self.model = model
+    self.img_tensor = img_tensor
+    self.cv2img = cv2img 
+    self.input_size = input_size
+    self.decoder_func = decoder_func
+    self.layers = self.getLayers(model)
+    
+
+  def runTool(self, layer_num):
+    heatmap = self.camXAITool(self.cv2img, self.img_tensor, self.model, self.layers[layer_num], self.input_size, self.decoder_func)
+    return heatmap
+  
+  def getLayers(self, model):
+    # Getting the layers from the model
+    layers = model.layers
+
+    # Setting up the array that contains the configs
+    layer_configs = []
+
+    for layer in layers:
+      layer_configs.append(layer.get_config())
+
+    layer_configs = np.array(layer_configs)
+
+    # Setting up the regex and filter
+    pattern = re.compile('conv.*')
+    layer_names = []
+
+    for layer in layer_configs:
+      if pattern.search(layer['name']):
+        layer_names.append(layer['name'])
+
+    return layer_names
+  
+  def camXAITool(self, cv2img, img_tensor, model, layer_name, input_size, decoder_func):
     # Getting the predictions from the model
-    # preds is the coded preds 
+    # preds is the coded preds and prediction is the string repr of the prediction
 
     # Debugging time code
     import time
     tic = time.time()
 
     preds = model.predict(img_tensor)
+
+    tic2 = time.time()
+
+    predictions = decoder_func(preds, top=1)[0][0]
+    predictions = predictions[1]
 
     tic3 = time.time()
     
@@ -75,9 +107,9 @@ class XAIHeatmap:
 
     tic5  = time.time()
     
-    print('forward pass: {}s'.format(tic3 - tic))
+    print('forward pass: {}s'.format(tic2 - tic))
+    print('decoding pred: {}s'.format(tic3 - tic2))
     print('camming: {}s'.format(tic4 - tic3))
     print('drawing: {}s'.format(tic5 - tic4))
 
-    return superimposed_image  
-  
+    return superimposed_image

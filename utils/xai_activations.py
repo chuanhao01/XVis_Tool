@@ -2,10 +2,14 @@ from keras import models
 import numpy as np
 
 class XAIActivations:
-    def __init__(self, img_tensor, model, layers):
-        self.img_tensor = img_tensor
+    def __init__(self, model, layers):
         self.model = model
         self.layers = layers
+
+    def runTool(self, img_tensor, layer_num):
+        activations = self.visualise_intermediate_layers(img_tensor, self.model, self.layers[layer_num])
+        activations = self.turnTo3d(activations)
+        return activations
 
     # Function to turn the 2-D numpy arrays of the activations into a 3-D array for cv2 to display
     def turnTo3d(self, activations_list):
@@ -18,13 +22,6 @@ class XAIActivations:
             activations_3d_list.append(activation_3d)
         return activations_3d_list
 
-
-    # High level wrapper function with defaults already placed
-    def runTool(self, layer_num):
-        activation_list = self.visualise_intermediate_layers(self.img_tensor, self.model, self.layers[layer_num])
-        activation_3d_list = self.turnTo3d(activation_list)
-        return activation_3d_list
-        
 
     def visualise_intermediate_layers(self, image, keras_model, desired_layer, channel_to_display = None):
         # Creating the model based on the layer selected
@@ -61,3 +58,6 @@ class XAIActivations:
         # Else just return the whole list
         else:
             return channel_image_list
+
+             return channel_image_list
+

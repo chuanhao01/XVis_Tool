@@ -1,12 +1,9 @@
-import keras
-from keras.datasets import mnist
+import cv2
 
-from keras.applications.vgg16 import VGG16, preprocess_input, decode_predictions
+cap = cv2.VideoCapture(0)
 
-# Loading MSIST dataset
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
-print(x_train.shape, y_train.shape)
-
-# Init model
-model = VGG16(include_top=False, weights=None)
-model.summary()
+while True:
+    ret_run, frame = cap.read()
+    print(frame.shape)
+    cv2.imshow('Test', frame)
+    cv2.waitKey(100)
