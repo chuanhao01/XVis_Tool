@@ -59,5 +59,3 @@ class XAIActivations:
         else:
             return channel_image_list
 
-             return channel_image_list
-
