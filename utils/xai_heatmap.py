@@ -53,9 +53,13 @@ class XAIHeatmap:
   def camXAITool(self, cv2img, img_tensor, model, layer_name, input_size, decoder_func):
     # Getting the predictions from the model
     # preds is the coded preds and prediction is the string repr of the prediction
+    # import time
+    # tic = time.time()
     preds = model.predict(img_tensor)
+    # tic2 = time.time()
     predictions = decoder_func(preds, top=1)[0][0]
     predictions = predictions[1]
+    # tic3 = time.time()
     # Getting the tensor of all weights of the final dense layer
     output = model.output
     # getting the indice/position of the weight that contributed the most to the classification
@@ -79,6 +83,7 @@ class XAIHeatmap:
     # Im still confused about the np.maximum funct
     heatmap = np.maximum(heatmap, 0)
     heatmap /= np.max(heatmap)
+    # tic4 = time.time()
     # Loading the img using cv2
     img = cv2img 
 
@@ -94,4 +99,11 @@ class XAIHeatmap:
     superimposed_image = heatmap * hif + img
     superimposed_image /= np.max(superimposed_image)
     superimposed_image *= 255.
+    # tic5  = time.time()
+    
+    print('forward pass: {}s'.format(tic2 - tic))
+    print('decoding pred: {}s'.format(tic3 - tic2))
+    print('camming: {}s'.format(tic4 - tic3))
+    print('drawing: {}s'.format(tic5 - tic4))
+
     return superimposed_image

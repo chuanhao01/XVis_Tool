@@ -7,6 +7,8 @@ from keras.applications.vgg16 import VGG16
 from keras.preprocessing import image
 from keras.applications.vgg16 import preprocess_input
 
+from time import time
+
 # mask = np.zeros((400, 400, 3), dtype='uint8')
 # # print(mask.shape)
 
@@ -42,25 +44,26 @@ from keras.applications.vgg16 import preprocess_input
 #     # Do something
 #     pass
 
-# Init drawer class
-drawer = Drawer()
-# Init XAIToolHeatmap class
-img_path = 'Sample_Images/cat_2.jpg'
-model = VGG16(weights = 'imagenet')
-input_size = (224, 224)
-xai_tool = XAITool(img_path, model, input_size)
-activations = xai_tool.xai_activations.runTool(0)
+# # Init drawer class
+# drawer = Drawer()
+# # Init XAIToolHeatmap class
+# img_path = 'Sample_Images/cat_2.jpg'
+# model = VGG16(weights = 'imagenet')
+# input_size = (224, 224)
+# xai_tool = XAITool(img_path, model, input_size)
+# activations = xai_tool.xai_activations.runTool(0)
 
-canvas = np.zeros((800, 1200, 3), dtype='uint8')
-act_len = 150
-for row in range(5):
-    for col in range(2):
-        act_index = row * 5 + col
-        activation = activations[act_index]
-        activation = cv2.resize(activation, (act_len, act_len))
-        canvas[(act_len * row):(act_len * (row + 1)), (act_len * col):(act_len * (col + 1)), :3] = activation
+# canvas = np.zeros((800, 1200, 3), dtype='uint8')
+# act_len = 150
+# for row in range(5):
+#     for col in range(2):
+#         act_index = row * 5 + col
+#         activation = activations[act_index]
+#         activation = cv2.resize(activation, (act_len, act_len))
+#         canvas[(act_len * row):(act_len * (row + 1)), (act_len * col):(act_len * (col + 1)), :3] = activation
 
-cv2.imshow('Debugging', canvas)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow('Debugging', canvas)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 
+print(time())

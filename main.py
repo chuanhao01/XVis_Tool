@@ -57,8 +57,11 @@ while(True):
     # Getting layer selected
     layer_selection = userSelection()
     # Updating the heatmaps and activations for the new layer
+    tick = time()
     new_heatmap = xai_tool.xai_heatmap.runTool(layer_selection)
     new_activations = xai_tool.xai_activations.runTool(layer_selection)
     # For now we assume the preds don't change
     drawer.draw(img, new_heatmap, new_activations, predictions, layer_selection + 1)
+    tock = time()
+    print(tock - tick)
 cv2.destroyAllWindows()
