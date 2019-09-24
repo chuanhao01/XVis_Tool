@@ -8,15 +8,36 @@ import re
 
 from keras.preprocessing import image
 
+###
+"""
+Notes for this high level class wrapper
+
+The decoder_func is an optional function that is passed in
+Note that this function should be in this format:
+
+def decoder_func(model, img_tensor):
+    prediction_string, confidence_score = model.get_class_prediction_string(img_tensor)
+    return [prediction_string, confidence_score] 
+
+The function takes in keras model and an img_tensor
+The function should return an array of a [string, float] of the prediction with the highest
+score and the score given to the prediction by the model
+"""
+###
+
 class XAITool:
-    def __init__(self, model, input_size, decoder_func, preprocess_img_func = None):
+    def __init__(self, model, input_size, decoder_func = None, preprocess_img_func = None):
         # Initialising vars
         self.model = model
         self.input_size = input_size
         self.decoder_func = decoder_func
-        # Special case for the optional preprocessing function
+        # Special case for the optional decoder and preprocessing function 
+        self.preprocess_img_func = None
+        self.decoder_func = None
         if (preprocess_img_func):
             self.preprocess_img_func = preprocess_img_func
+        if(decoder_func):
+            self.decoder_func = decoder_func
         # Getting the conv layers of the model
         self.layers = self.getLayers(self.model)
         # Setting up the instances of the heatmap and activation tool
@@ -46,12 +67,6 @@ class XAITool:
             img_tensor = preprocess_img_func(img_tensor)
         return img_tensor
 
-    # Method to get a list of the predictions
-    def getPrediction(self, model, img_tensor, decoder_func):
-        preds = model.predict(img_tensor)
-        preds = decoder_func(preds, top=1)[0][0]
-        return preds
-
     # Gets and sets the layers of the model in the class, also returns the layer when called
     def getLayers(self, model):
         # Getting the layers from the model
@@ -75,6 +90,8 @@ class XAITool:
 
         return layer_names
 
+    # High level wrapper for the function, return the heatmap and activation in a dic
+    # Will also return preds if present
     def vidCapRun(self, frame, selected_layer):
         # Renaming the var
         cv2img = frame
@@ -85,9 +102,20 @@ class XAITool:
             img_tensor = self.preprocessImg(img, self.input_size, preprocess_img_func=self.preprocess_img_func)
         else:
             img_tensor = self.preprocessImg(img, self.input_size)
-        # Getting the predictions based on the image and model
-        preds = self.getPrediction(self.model, img_tensor, self.decoder_func)
         # Getting the heatmap and activations
         heatmap = self.xai_heatmap.runTool(cv2img, img_tensor, selected_layer)
         activations = self.xai_activations.runTool(img_tensor, selected_layer)
-        return preds, heatmap, activations
+        # Checking if there is a decoding function
+        # A dictionary is returned so as to allow the program to check
+        if(self.decoder_func):
+            preds = self.decoder_func(self.model, img_tensor)
+            return {
+                'heatmap': heatmap,
+                'activations': activations,
+                'predictions': preds
+            }
+        else:
+            return {
+                'heatmap': heatmap,
+                'activations': activations,
+            }
