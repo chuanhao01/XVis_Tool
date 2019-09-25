@@ -110,23 +110,24 @@ class Drawer:
   def resetMask(self):
     self.mask = np.zeros((800, 1200, 3), dtype='uint8')
 
-  def singleThread(self, input_img, heatmap, activations, selected_layer, layer_num, preds = None):
-    self.drawOriPic(input_img)
-    self.drawHeatmap(heatmap)
-    self.drawActivations(activations)
-    # Setting up for the text
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    font_scale = 1
-    font_color = (255, 255, 255)
-    line_type = 2
-    cord_layer = (10, 750)
-    self.drawLayerNum(font, cord_layer, font_scale, font_color, line_type, (selected_layer, layer_num))
-    if(preds):
-      cord_pred = (10, 790) 
-      self.drawPredictions(font, cord_pred, font_scale, font_color, line_type, preds)
-    cv2.imshow('XAI Tool', self.mask)
-    cv2.waitKey(100)
-    self.mask = np.zeros((800, 1200, 3), dtype='uint8')
+  # Old Single Thread code
+  # def singleThread(self, input_img, heatmap, activations, selected_layer, layer_num, preds = None):
+  #   self.drawOriPic(input_img)
+  #   self.drawHeatmap(heatmap)
+  #   self.drawActivations(activations)
+  #   # Setting up for the text
+  #   font = cv2.FONT_HERSHEY_SIMPLEX
+  #   font_scale = 1
+  #   font_color = (255, 255, 255)
+  #   line_type = 2
+  #   cord_layer = (10, 750)
+  #   self.drawLayerNum(font, cord_layer, font_scale, font_color, line_type, (selected_layer, layer_num))
+  #   if(preds):
+  #     cord_pred = (10, 790) 
+  #     self.drawPredictions(font, cord_pred, font_scale, font_color, line_type, preds)
+  #   cv2.imshow('XAI Tool', self.mask)
+  #   cv2.waitKey(100)
+  #   self.mask = np.zeros((800, 1200, 3), dtype='uint8')
 
       
     

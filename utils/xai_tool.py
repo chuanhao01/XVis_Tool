@@ -26,7 +26,7 @@ score and the score given to the prediction by the model
 ###
 
 class XAITool:
-    def __init__(self, model, input_size, decoder_func = None, preprocess_img_func = None, graph = None):
+    def __init__(self, model, input_size, decoder_func = None, preprocess_img_func = None):
         # Initialising vars
         self.model = model
         self.input_size = input_size
@@ -34,17 +34,14 @@ class XAITool:
         # Special case for the optional decoder and preprocessing function 
         self.preprocess_img_func = None
         self.decoder_func = None
-        self.graph = None
         if (preprocess_img_func):
             self.preprocess_img_func = preprocess_img_func
         if(decoder_func):
             self.decoder_func = decoder_func
-        if(graph):
-            self.graph = graph
         # Getting the conv layers of the model
         self.layers = self.getLayers(self.model)
         # Setting up the instances of the heatmap and activation tool
-        self.xai_heatmap = XAIHeatmap(self.model, self.layers, graph = self.graph)
+        self.xai_heatmap = XAIHeatmap(self.model, self.layers)
         self.xai_activations = XAIActivations(self.model, self.layers)
             
     # For still img takes in the path and loads it into the class, then returns the cv2 imread of the image
