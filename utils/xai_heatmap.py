@@ -14,9 +14,12 @@ import re
 from keras.applications.vgg16 import VGG16
 
 class XAIHeatmap:
-  def __init__(self, model, layers):
+  def __init__(self, model, layers, graph = None):
     self.model = model
     self.layers = layers
+    self.graph = None
+    if(graph):
+      self.graph = graph
   
   # High level wrapping function to run and get a heatmap
   def runTool(self, cv2img, img_tensor, layer_num):
@@ -31,7 +34,11 @@ class XAIHeatmap:
     import time
     tic = time.time()
 
-    preds = model.predict(img_tensor)
+    if(self.graph):
+      with self.graph.as_default():
+        preds = model(img_tensor)
+    else:
+      preds = model.predict(img_tensor)
 
     tic3 = time.time()
     
