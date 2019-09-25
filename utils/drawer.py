@@ -32,7 +32,7 @@ class Drawer:
     ori_img = self.resizeDisplayImg(ori_img, 400)
     self.drawPicOver(ori_img, cords)
 
-  def drawheatmap(self, heatmap):
+  def drawHeatmap(self, heatmap):
     cords = (400, 0)
     heatmap = self.resizeDisplayImg(heatmap, 400)
     self.drawPicOver(heatmap, cords)
@@ -72,8 +72,8 @@ class Drawer:
           cords = (act_len * _row, x_offset + act_len * _col)
           self.drawPicOver(act_to_show, cords)
     
-  def drawLayerNum(self, font, btm_left, font_scale, font_color, line_type, selected_layer, layer_num):
-    txt_to_show = 'Layer: {} Number: {}'.format(selected_layer, layer_num)
+  def drawLayerNum(self, font, btm_left, font_scale, font_color, line_type, draw_layers_list):
+    txt_to_show = 'Layer: {} Number: {}'.format(draw_layers_list[0], draw_layers_list[1])
     cv2.putText(self.mask, txt_to_show,
     btm_left,
     font,
@@ -93,9 +93,8 @@ class Drawer:
     line_type
     )
 
-  def singleThread(self, input_img, heatmap, activations, selected_layer, layer_num, preds = None):
-    self.drawOriPic(input_img)
-    self.drawheatmap(heatmap)
+  def multiTemp(self, heatmap, activations,  select_layers_list, preds = None):
+    self.drawHeatmap(heatmap)
     self.drawActivations(activations)
     # Setting up for the text
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -103,14 +102,33 @@ class Drawer:
     font_color = (255, 255, 255)
     line_type = 2
     cord_layer = (10, 750)
-    self.drawLayerNum(font, cord_layer, font_scale, font_color, line_type, selected_layer, layer_num)
+    self.drawLayerNum(font, cord_layer, font_scale, font_color, line_type, select_layers_list)
+    if(preds):
+      cord_pred = (10, 790)
+      self.drawPredictions(font, cord_pred, font_scale, font_color, line_type, preds)
+  
+  def resetMask(self):
+    self.mask = np.zeros((800, 1200, 3), dtype='uint8')
+
+  def singleThread(self, input_img, heatmap, activations, selected_layer, layer_num, preds = None):
+    self.drawOriPic(input_img)
+    self.drawHeatmap(heatmap)
+    self.drawActivations(activations)
+    # Setting up for the text
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    font_scale = 1
+    font_color = (255, 255, 255)
+    line_type = 2
+    cord_layer = (10, 750)
+    self.drawLayerNum(font, cord_layer, font_scale, font_color, line_type, (selected_layer, layer_num))
     if(preds):
       cord_pred = (10, 790) 
       self.drawPredictions(font, cord_pred, font_scale, font_color, line_type, preds)
     cv2.imshow('XAI Tool', self.mask)
     cv2.waitKey(100)
     self.mask = np.zeros((800, 1200, 3), dtype='uint8')
-    
+
+      
     
 
 # class Drawer:

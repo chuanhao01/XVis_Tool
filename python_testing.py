@@ -1,9 +1,7 @@
-import cv2
+a = {
+    'a': 1,
+    'b': 2,
+}
 
-cap = cv2.VideoCapture(0)
-
-while True:
-    ret_run, frame = cap.read()
-    print(frame.shape)
-    cv2.imshow('Test', frame)
-    cv2.waitKey(100)
+for something in a:
+    print(something)
