@@ -63,8 +63,8 @@ def xaiProcessing():
     from keras.applications.xception import Xception, decode_predictions, preprocess_input
     from keras.models import load_model
     # model = Xception(weights = 'imagenet')
-    model = load_model('models/best_xception_based_mnist.h5')
-    input_size = (71, 71) 
+    model = load_model('models/best_vgg_based_mnist.h5')
+    input_size = (48, 48) 
     target_labels = [str(i) for i in range(10)]
     preprocess_input = None 
 
@@ -96,6 +96,7 @@ def xaiProcessing():
             drawer.resetMask()
             with data_lock:
                 grabbed_frame = shared_dict['frame']
+                # grabbed_frame = cv2.cvtColor(grabbed_frame, cv2.COLOR_BGR2GRAY)
                 selected_layer_num = shared_dict['selected_layer']
             xai_dict = xai_tool.vidCapRun(grabbed_frame, selected_layer_num)
             select_layers_list = [xai_tool.layers[selected_layer_num], selected_layer_num]
@@ -109,7 +110,9 @@ xai_process_thread.start()
 
 while(True):
     _, frame = cap.read()
-    shared_dict['frame'] = frame
+    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # gray = np.stack([gray, gray, gray], axis=2)
+    shared_dict['frame'] = frame 
     drawer.drawOriPic(frame) 
     if(shared_dict['heatmap'] is not None and shared_dict['activations'] is not None and shared_dict['select_layers_list'] is not None):
         heatmap = shared_dict['heatmap']
