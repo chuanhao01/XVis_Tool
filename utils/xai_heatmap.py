@@ -76,9 +76,9 @@ class XAIHeatmap:
 
     tic5  = time.time()
     
-    print('forward pass: {}s'.format(tic3 - tic))
-    print('camming: {}s'.format(tic4 - tic3))
-    print('drawing: {}s'.format(tic5 - tic4))
+    # print('forward pass: {}s'.format(tic3 - tic))
+    # print('camming: {}s'.format(tic4 - tic3))
+    # print('drawing: {}s'.format(tic5 - tic4))
 
     return superimposed_image  
   
