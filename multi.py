@@ -119,7 +119,7 @@ while(True):
         activations = shared_dict['activations']
         select_layers_list = shared_dict['select_layers_list']
         preds = shared_dict['predictions']
-        drawer.multiTemp(heatmap, activations, select_layers_list, preds = preds)
+        drawer.multiThread(heatmap, activations, select_layers_list, preds = preds)
         with data_lock:
             shared_dict['heatmap'] = None
             shared_dict['activations'] = None

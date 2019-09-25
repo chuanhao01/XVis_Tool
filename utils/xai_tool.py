@@ -118,4 +118,34 @@ class XAITool:
             return {
                 'heatmap': heatmap,
                 'activations': activations,
+                'predictions': None,
+            }
+    
+    # High level wrapper for the still img function
+    # Note: I'm sure there is an even better way to implement this but I leaving this as it is
+    def stillImgRun(self, selected_layer):
+        # Setting up the local vars from class vars
+        cv2img = self.still_cv2_img
+        img = self.still_img
+        if(self.preprocess_img_func):
+            img_tensor = self.preprocessImg(img, self.input_size, preprocess_img_func=self.preprocess_img_func)
+        else:
+            img_tensor = self.preprocessImg(img, self.input_size)
+        # Getting the heatmap and activations
+        heatmap = self.xai_heatmap.runTool(cv2img, img_tensor, selected_layer)
+        activations = self.xai_activations.runTool(img_tensor, selected_layer)
+        # Checking if there is a decoding function
+        # A dictionary is returned so as to allow the program to check
+        if(self.decoder_func):
+            preds = self.decoder_func(self.model, img_tensor)
+            return {
+                'heatmap': heatmap,
+                'activations': activations,
+                'predictions': preds
+            }
+        else:
+            return {
+                'heatmap': heatmap,
+                'activations': activations,
+                'predictions': None,
             }
