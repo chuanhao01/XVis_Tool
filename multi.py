@@ -28,7 +28,7 @@ data_lock = Lock()
 
 def xaiProcessing():
     # Need to import the keras mdoel in the thread itself
-    from keras.applications.vgg16 import VGG16, decode_predictions, preprocess_input
+    from keras.applications.xception import Xception, decode_predictions, preprocess_input
     model = Xception(weights = 'imagenet')
     input_size = (299, 299) 
     model._make_predict_function()
