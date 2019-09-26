@@ -6,7 +6,7 @@ This was a project done by me([@chuanhao01](https://github.com/chuanhao01)) and 
 This project aims to help explain how a Convolutional Neural Network(CNN) makes its decision by visualizing the Class Activation Heatmap(CAM) of its hidden layers and the activations of each individual filter within that layer.  
 
 Example of the program running:  
-![Example using some defaults in the program](content/example_deafult.png)  
+![Example using some defaults in the program](content/readme/example_deafult.png)  
 
 For more information on the project click [here --notdone]()
 
