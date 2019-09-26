@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from utils.drawer import Drawer
-from utils.xai_tool import XAITool
+from utils.xvis_tool import XVisTool
 
 from time import time
 
@@ -92,7 +92,7 @@ def xaiProcessing():
 
     decode = createDecoder(target_labels)
 
-    xai_tool = XAITool(model, input_size, decoder_func = decode, preprocess_img_func=preprocess_input)
+    xai_tool = XVisTool(model, input_size, decoder_func = decode, preprocess_img_func=preprocess_input)
 
     # Spawning a thread to change selected layers
     change_layer_thread = Thread(target = changeSelectedLayer, args=([xai_tool.layers]))
@@ -129,7 +129,7 @@ while(True):
             shared_dict['activations'] = None
             shared_dict['predictions'] = None
             shared_dict['select_layers_list'] = None
-    cv2.imshow('XAI_multi', drawer.mask)
+    cv2.imshow('XVis Multi', drawer.mask)
     cv2.waitKey(100)
  
 

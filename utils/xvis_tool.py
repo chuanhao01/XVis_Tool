@@ -25,7 +25,7 @@ score and the score given to the prediction by the model
 """
 ###
 
-class XAITool:
+class XVisTool:
     def __init__(self, model, input_size, decoder_func = None, preprocess_img_func = None):
         # Initialising vars
         self.model = model

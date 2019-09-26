@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from utils.drawer import Drawer
-from utils.xai_tool import XAITool
+from utils.xvis_tool import XVisTool 
 
 def getSelectedLayer(layers):
     while(True):
@@ -66,7 +66,7 @@ decode = createDecoder(target_labels)
 # Init classes
 drawer = Drawer()
 cap = cv2.VideoCapture(0)
-xai_tool = XAITool(model, input_size, decoder_func = decode, preprocess_img_func=preprocess_input)
+xai_tool = XVisTool(model, input_size, decoder_func = decode, preprocess_img_func=preprocess_input)
 
 # Showing the default 
 ori_img = xai_tool.setStillImg(img_path) 
@@ -74,7 +74,7 @@ xai_dict = xai_tool.stillImgRun(-1)
 layers = xai_tool.layers
 
 drawer.singleThread(ori_img, xai_dict['heatmap'], xai_dict['activations'], [layers[-1], -1], xai_dict['predictions'])
-cv2.imshow('XAI_Single', drawer.mask)
+cv2.imshow('XVis Single', drawer.mask)
 cv2.waitKey(100)
 while(True):
     print('These are the layers you can select: ')
@@ -83,5 +83,5 @@ while(True):
     selected_layer = getSelectedLayer(layers)
     xai_dict = xai_tool.stillImgRun(selected_layer)
     drawer.singleThread(ori_img, xai_dict['heatmap'], xai_dict['activations'], [layers[selected_layer], selected_layer], xai_dict['predictions'])
-    cv2.imshow('XAI_Single', drawer.mask)
+    cv2.imshow('XVis Single', drawer.mask)
     cv2.waitKey(100)
