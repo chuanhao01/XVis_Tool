@@ -63,10 +63,10 @@ def xaiProcessing():
     from keras.applications.xception import Xception, decode_predictions, preprocess_input
     from keras.models import load_model
     model = Xception(weights = 'imagenet')
-    # model = load_model('models/best_vgg_based_mnist.h5')
+    # model = load_model('models/mobilenet_v2_2_acc.hdf5')
     input_size = (299, 299) 
     target_labels = None
-    # target_labels = [str(i) for i in range(10)]
+    # target_labels = ['ChairPose', 'ChestBump', 'ChildPose', 'Dabbing', 'EaglePose', 'HandGun', 'HandShake', 'HighKneel', 'HulkSmash', 'KoreanHeart', 'KungfuCrane', 'KungfuSalute', 'Salute', 'Spiderman', 'WarriorPose']
     preprocess_input = preprocess_input 
 
     # Wrapper so as to automatically create the decoder function
@@ -84,6 +84,12 @@ def xaiProcessing():
                 preds = [preds[1], preds[2]]
                 return preds
         return decode
+    
+    # Preprocess input function goes here
+    # def preprocess_input(img_tensor):
+    #     img_tensor = img_tensor / 255 
+    #     return img_tensor
+
     decode = createDecoder(target_labels)
 
     xai_tool = XAITool(model, input_size, decoder_func = decode, preprocess_img_func=preprocess_input)
@@ -97,7 +103,6 @@ def xaiProcessing():
             drawer.resetMask()
             with data_lock:
                 grabbed_frame = shared_dict['frame']
-                # grabbed_frame = cv2.cvtColor(grabbed_frame, cv2.COLOR_BGR2GRAY)
                 selected_layer_num = shared_dict['selected_layer']
             xai_dict = xai_tool.vidCapRun(grabbed_frame, selected_layer_num)
             select_layers_list = [xai_tool.layers[selected_layer_num], selected_layer_num]
@@ -111,8 +116,6 @@ xai_process_thread.start()
 
 while(True):
     _, frame = cap.read()
-    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # gray = np.stack([gray, gray, gray], axis=2)
     shared_dict['frame'] = frame 
     drawer.drawOriPic(frame) 
     if(shared_dict['heatmap'] is not None and shared_dict['activations'] is not None and shared_dict['select_layers_list'] is not None):

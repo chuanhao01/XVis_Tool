@@ -32,6 +32,7 @@ from keras.models import load_model
 # Changes come below here 
 
 model = Xception(weights = 'imagenet')
+# model = load_model('models/mobilenet_v2_2_acc.hdf5')
 img_path = 'Sample_Images/doberman_1.jpg'
 # model = load_model('models/best_xception_based_mnist.h5')
 input_size = (299, 299) 
@@ -54,6 +55,12 @@ def createDecoder(target_labels):
             preds = [preds[1], preds[2]]
             return preds
     return decode
+
+# Custom preprocess input function if you have one
+# def preprocess_input(img_tensor):
+#         img_tensor = img_tensor / 255 
+#         return img_tensor
+
 decode = createDecoder(target_labels)
 
 # Init classes
