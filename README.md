@@ -65,10 +65,46 @@ XAI_Project
 └─ single.py
 ```
 
-The template code are in the files single.py and multi.py.  
+The template code for running the tool are in the files `single.py` and `multi.py`.  
 
-The file single.py is a single threaded implementation meant for running on still images. The file multi.py is a multi threaded implementation of the tool, using video feed from a webcam.
+The file `single.py` is a single threaded implementation meant for running on still images. The file `multi.py` is a multi threaded implementation of the tool, using video feed from a webcam.
 
-Both files are using a pre-trained model on imagenet from the keras.application module.
+Currently, both files are set-up to run on models pre-trained on imagenet imported from the `keras.applications` module.
 
-Currently, both files are set-up to run
+Note: As the `single.py` file runs on still images, it is set up to look at one of the sample images for now.
+
+If you want to adapt to code to run on other models, with different images, you can refer to the comments in the template code itself or look at our [wiki guide]().
+
+To run the respective `single.py` or `multi.py` files, do:
+
+```bash
+python3 single.py
+
+or
+
+python3 multi.py
+```
+
+Side Note: If you have CUDA configured and are using `tensorflow --version 1.13.1` you may run into some errors starting CUDA. The soultion that worked for me was to set-up an enviroment variable before running the file.  
+I did the following:  
+
+```bash
+TF_FORCE_GPU_ALLOW_GROWTH=true python3 multi.py
+```
+
+## Credits
+
+Here are some of the papers and github repos we referenced while working on this project:  
+
+Visualizing intermediate activation in Convolutional Neural Networks with Keras:  
+[Github Repo](https://github.com/gabrielpierobon/cnnshapes)  
+[Medium Article](https://towardsdatascience.com/visualizing-intermediate-activation-in-convolutional-neural-networks-with-keras-260b36d60d0)
+
+[Keras-Class-Activation-Map](https://github.com/nickbiso/Keras-Class-Activation-Map)  
+
+DeepVis: 
+[Github Repo](https://github.com/yosinski/deep-visualization-toolbox)
+[Website](http://yosinski.com/deepvis)
+[Understanding Neural Networks Through Deep Visualization Paper](https://arxiv.org/abs/1506.06579)
+[Link to the paper](http://yosinski.com/media/papers/Yosinski__2015__ICML_DL__Understanding_Neural_Networks_Through_Deep_Visualization__.pdf)
+
