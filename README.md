@@ -1,4 +1,4 @@
-# XAI Project
+# XVis_Tool 
 
 This was a project done by me([@chuanhao01](https://github.com/chuanhao01)) and david([@David-The-Programmer](https://github.com/David-The-Programmer)) while we were interning at [DSTA](https://www.dsta.gov.sg/)  
 
