@@ -112,6 +112,7 @@ class Drawer:
     self.mask = np.zeros((800, 1200, 3), dtype='uint8')
 
   def singleThread(self, ori_img, heatmap, activations, select_layers_list, preds = None):
+    self.resetMask()
     self.drawOriPic(ori_img)
     self.drawHeatmap(heatmap)
     self.drawActivations(activations)

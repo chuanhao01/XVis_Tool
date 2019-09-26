@@ -62,11 +62,12 @@ def xaiProcessing():
     # Need to import the keras mdoel in the thread itself
     from keras.applications.xception import Xception, decode_predictions, preprocess_input
     from keras.models import load_model
-    # model = Xception(weights = 'imagenet')
-    model = load_model('models/best_vgg_based_mnist.h5')
-    input_size = (48, 48) 
-    target_labels = [str(i) for i in range(10)]
-    preprocess_input = None 
+    model = Xception(weights = 'imagenet')
+    # model = load_model('models/best_vgg_based_mnist.h5')
+    input_size = (299, 299) 
+    target_labels = None
+    # target_labels = [str(i) for i in range(10)]
+    preprocess_input = preprocess_input 
 
     # Wrapper so as to automatically create the decoder function
     def createDecoder(target_labels):

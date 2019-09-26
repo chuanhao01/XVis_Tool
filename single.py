@@ -31,12 +31,13 @@ from keras.models import load_model
 
 # Changes come below here 
 
-# model = Xception(weights = 'imagenet')
-img_path = 'Sample_Images/number_7.png'
-model = load_model('models/best_xception_based_mnist.h5')
-input_size = (71, 71) 
-target_labels = [str(i) for i in range(10)]
-preprocess_input = None 
+model = Xception(weights = 'imagenet')
+img_path = 'Sample_Images/doberman_1.jpg'
+# model = load_model('models/best_xception_based_mnist.h5')
+input_size = (299, 299) 
+target_labels = None
+# target_labels = [str(i) for i in range(10)]
+preprocess_input = preprocess_input 
 
 # Wrapper so as to automatically create the decoder function
 def createDecoder(target_labels):
