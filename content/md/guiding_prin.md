@@ -9,4 +9,4 @@ Lastly as we wanted the utility classes to be applied universally to any keras m
 As such some readability and code structure is comprimised at the hightest level.
 
 A breif layout of the interaction between the classes: 
-![Guiding Principles Layout](content/wiki/home/guide_layout.png)
+![Guiding Principles Layout](../wiki/guide/detailed_layout.png)

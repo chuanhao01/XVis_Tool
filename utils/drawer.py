@@ -111,6 +111,7 @@ class Drawer:
   def resetMask(self):
     self.mask = np.zeros((800, 1200, 3), dtype='uint8')
 
+  # High level wrapper used for the template Single thread implementation
   def singleThread(self, ori_img, heatmap, activations, select_layers_list, preds = None):
     self.resetMask()
     self.drawOriPic(ori_img)
