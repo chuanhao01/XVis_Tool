@@ -8,7 +8,7 @@ This project aims to help explain how a Convolutional Neural Network(CNN) makes 
 Example of the program running:  
 ![Example using some defaults in the program](content/readme/example_deafult.png)  
 
-For more information on the project click [here --notdone]()
+For more information on the project click [here](https://github.com/chuanhao01/XVis_Tool/wiki)
 
 
 ## Installation
@@ -73,7 +73,7 @@ Currently, both files are set-up to run on models pre-trained on imagenet import
 
 Note: As the `single.py` file runs on still images, it is set up to look at one of the sample images for now.
 
-If you want to adapt to code to run on other models, with different images, you can refer to the comments in the template code itself or look at our [wiki guide]().
+If you want to adapt to code to run on other models, with different images, you can refer to the comments in the template code itself or look at our [wiki guide](https://github.com/chuanhao01/XVis_Tool/wiki).
 
 To run the respective `single.py` or `multi.py` files, do:
 
