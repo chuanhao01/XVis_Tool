@@ -103,10 +103,10 @@ Visualizing intermediate activation in Convolutional Neural Networks with Keras:
 [Keras-Class-Activation-Map](https://github.com/nickbiso/Keras-Class-Activation-Map)  
 
 DeepVis: 
-[Github Repo](https://github.com/yosinski/deep-visualization-toolbox)
-[Website](http://yosinski.com/deepvis)
-[Understanding Neural Networks Through Deep Visualization Paper](https://arxiv.org/abs/1506.06579)
-[Link to the paper](http://yosinski.com/media/papers/Yosinski__2015__ICML_DL__Understanding_Neural_Networks_Through_Deep_Visualization__.pdf)
+[Github Repo](https://github.com/yosinski/deep-visualization-toolbox)  
+[Website](http://yosinski.com/deepvis)  
+[Understanding Neural Networks Through Deep Visualization Paper](https://arxiv.org/abs/1506.06579)  
+[Link to the paper](http://yosinski.com/media/papers/Yosinski__2015__ICML_DL__Understanding_Neural_Networks_Through_Deep_Visualization__.pdf)  
 
 ## License
 
